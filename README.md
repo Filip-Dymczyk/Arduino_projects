@@ -14,6 +14,6 @@ LCD_LM35_TEMP_dc_motor project:
 DHT_11 project:
 - test of a DHT11 digital temperature and humidity sensor done with external libraries.
 
-RGB_diode_distance_sensor:
+RGB_diode_distance_sensor project:
 - HC-SR04 ultrasound sensor used for distance measurement,
-- RGB diode illumination controlled via above mentioned sensor.
+- RGB diode illumination control via above mentioned sensor.
