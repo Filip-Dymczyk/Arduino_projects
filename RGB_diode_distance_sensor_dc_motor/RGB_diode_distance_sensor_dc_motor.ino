@@ -1,19 +1,20 @@
-#define TRIGGER D2
-#define ECHO D4
+#define TRIGGER D1
+#define BUTTON D2
 #define RGB D3
+#define ECHO D4
 #define MOTOR_PWM D5
 #define MOTOR_PLUS D6
 #define MOTOR_MINUS D7
-#define BUTTON D8
 
 static float constexpr MIN_PWM = 0.0f;
 static float constexpr PWM_RANGE = 256.0f;
 static float constexpr MIN_DISTANCE = 3.0f; // [cm]
 static float constexpr MAX_DISTANCE = 50.0f; // [cm]
-static bool motor_running = false;
+volatile bool motor_running = false;
 
-static float constexpr DEBOUNCE_TIME = 200.0f; // [ms]
-static float start_debounce = 0.0f;
+static float constexpr DEBOUNCE_TIME = 100.0f; // [ms]
+volatile float start_debounce = 0.0f;
+
 
 void setup() 
 {
@@ -21,13 +22,11 @@ void setup()
   Serial.begin(9600);
   analogWrite(RGB, static_cast<int>(PWM_RANGE));
   analogWrite(MOTOR_PWM, static_cast<int>(MIN_PWM));
+  attachInterrupt(digitalPinToInterrupt(BUTTON), check_stop_start_motor, RISING);
 }
 
 void loop() 
 {
-  bool const is_button_pressed = static_cast<bool>(digitalRead(BUTTON));
-  check_stop_start_motor(is_button_pressed);
-
   uint32_t const distance = measure_distance();
   update_RGB_diode(distance);
 }
@@ -80,17 +79,17 @@ update_RGB_diode(uint32_t distance)
 }
 
 void
-check_stop_start_motor(bool is_button_pressed)
+check_stop_start_motor()
 {
   if((millis() - start_debounce) > DEBOUNCE_TIME)
   {
-    if(motor_running && is_button_pressed)
+    if(motor_running)
     {
       motor_running = false;
       stop_motor();
       start_debounce = millis();
     }
-    else if(!motor_running && is_button_pressed)
+    else
     {
       motor_running = true;
       start_motor();
