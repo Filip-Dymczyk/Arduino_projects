@@ -22,4 +22,4 @@ RGB_diode_distance_sensor project:
 RGB_diode_distance_sensor_dc_motor project:
 - extending of previous project,
 - added MOT-00949 DC motor speed control (via L293D controller) with ultrasound distance sensor,
-- start/stop push-button (pulled down) for the motor with debouncing.
+- start/stop motor push-button (pulled down) with debouncing implemented using interrupt.
