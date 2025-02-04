@@ -1,5 +1,6 @@
 # Arduino_projects
 ## This repo contains personal Arduino projects done to increase hands-on hardware and embedded programming knowledge.
+## Hardware used was Arduino UNO R4 board.
 
 LCD_LM35_TEMP project:
 - LM35 analog thermometer used for reading temperature,
